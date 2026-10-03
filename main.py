@@ -8,7 +8,11 @@ DATA = Path(__file__).parent / "Data" / "Data.csv"
 def openFile(dataObject):
     with open(dataObject, "r") as f:
         readFile = f.read()
-        print(readFile)
+    # returning the file which can now be analysed.
+    return readFile
+
+
+        
 
 
 if __name__== "__main__":
