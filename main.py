@@ -1,0 +1,14 @@
+import csv
+from pathlib import Path
+
+# find the Data in the file system
+DATA = Path(__file__).parent / "Data" / "Data.csv"
+
+def openFile(dataObject):
+    with open(dataObject, "r") as f:
+        readFile = f.read()
+        print(readFile)
+
+
+if __name__== "__main__":
+    openFile(DATA)
