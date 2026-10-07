@@ -9,12 +9,26 @@ DATA = Path(__file__).parent / "Data" / "Data.csv"
 df = pd.read_csv(DATA)
 
 # check the shape/size of the csv file
-def checkShape():
+def checkData():
     # assigning a variable to the shape of the csv
-    dataShape = df.shape
     # returning this shape which will help us analyse the data
     # in this case (112516, 5) gets returned so we know how many rows and columns
-    return dataShape
+    dataShape = df.shape
+    return print(dataShape)
+
+def checkMissingValues(data):
+    # using isna() to go through the csv file to hightlight if there are missing values and sums the amount of missing values per columns
+    missing = data.isna().sum()
+    # returns a pandas dataframe with one column from the pandas series variable - missing
+    return pd.DataFrame({"Missing": missing})
+
+def processMissing():
+    # show the rows which have missing data
+    df = df[df.isna().any(axis=1)]
+
+    # Remove these rows which we have found with missing values
+    df = df.dropna()
+    return df.shape
 
 # Opening the file and reading its contents.
 # def openFile(dataObject):
@@ -47,7 +61,8 @@ def checkShape():
 # print("Test participants:", sorted(groups.iloc[test_idx].unique().tolist()))
 
 if __name__ == "__main__":
-    checkShape()     
+    checkData()
+    print(processMissing())  
 
 
 
