@@ -22,7 +22,7 @@ def checkMissingValues(data):
     # returns a pandas dataframe with one column from the pandas series variable - missing
     return pd.DataFrame({"Missing": missing})
 
-def processMissing():
+def processMissing(df):
     # show the rows which have missing data
     df = df[df.isna().any(axis=1)]
 
@@ -62,7 +62,7 @@ def processMissing():
 
 if __name__ == "__main__":
     checkData()
-    print(processMissing())  
+    print(processMissing(DATA))  
 
 
 
