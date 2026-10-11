@@ -16,6 +16,10 @@ def loadData():
     # return the dataframe
     return df
 
+# Check the data shape - columns and amount of row values before we do any validating
+def checkDataShapeBeforeValidating(df):
+    print(df.shape)
+
 # function to handle missing values in the data
 def handle_missing_values(df):
     # use the input argument dataframe - df
@@ -40,7 +44,7 @@ def checkForNoEmptyValues(df):
     # if there still are empty values then print a warning
     # Otherwise let the user know there are no empty values
     if emptyValues:
-        print(f"Warning: {emptyValues} still remain in the dataset")
+        print(f"Warning: {emptyValues} empty values found in the dataset")
     else:
         print("No more empty values in Dataset")
 
@@ -51,24 +55,29 @@ def checkNoDuplicates(df):
     # Given the Time (Sec) column it would be very difficult for their to be any duplicates and I dont want to remove this column
     # This is just to confirm there are no two rows the exact same.
     if duplicates:
-        print(f"Warning: {duplicates} still remain in the dataset")
+        print(f"Warning: {duplicates} duplicate values found in the dataset")
     else:
         print("No duplicated values detected in the dataset")
 
 def checkDataTypes(df):
     # Checking that the data in the columns are consistent.
-    # mixed or text value data types would make pandeas store it as a non numeric type
+    # mixed or text value data types would make pandas store it as a non numeric type
     # So, we need a check to make sure they are numeric.
-
-    # check the datatypes of the columns in the dataframe
-    dataTypes = df.dtypes
 
     # assigns any columns which are non numeric to the variable nonNumeric
     nonNumeric = df.select_dtypes(exclude="number")
-    if len(nonNumeric.columns()):
-        print(f"Warning: {nonNumeric} still remain in the dataset")
+    # checks the lenght of the columns in the non numeric dataframe.
+    # If there is a column thats non-numeric then len will be > 0
+    # use this to print a warning message to the user.
+    if len(nonNumeric.columns):
+        columns = list(nonNumeric.columns)
+        print(f"Warning: {columns} Non-Numeric columns found in the dataset")
     else:
-        print("No duplicated values detected in the dataset")
+        print("No Non-Numeric columns detected in the dataset")
+
+# Check the data shape - columns and amount of row values after validation
+def checkDataShapeAfterValidating(df):
+    print(df.shape)
 
 def returnCleanData():
     # This function acts as the conductor of the file, I will run this function from __main__ block
@@ -78,18 +87,26 @@ def returnCleanData():
     # Load the data from the file
     df = loadData()
 
+    # Check dhape of data loaded from file
+    checkDataShapeBeforeValidating(df)
+
     # CLean the Dataframe we have loaded above to remove missing vales
     df = handle_missing_values(df)
 
     # Now, check the Dataframe and ensure we are getting valid data such as,
     # The data has no more empty values, It has no duplicate values and the datatypes are consistent
+    checkForNoEmptyValues(df)
+    checkNoDuplicates(df)
+    checkDataTypes(df)
+
+    # Check Data Shape after validating the data
+    checkDataShapeAfterValidating(df)
+
+    # Now we can return the cleaned data
+    return df
 
 
 
 
 if __name__ == "__main__":
-    x = loadData()
-    u = handle_missing_values(x)
-    print(checkForNoEmptyValues(u))
-    print(checkNoDuplicates(u))
-    print(checkDataTypes(u))
+    returnCleanData()
