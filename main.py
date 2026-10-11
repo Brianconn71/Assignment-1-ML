@@ -1,48 +1,12 @@
-from pathlib import Path
-import pandas as pd
+"""
+This file takes in the data which has been preprocessed from the preprocess.py file and runs a Decision Tree 
+Machine Learning Algoritm on it.
+"""
+from preprocess import returnCleanData
 from sklearn.model_selection import GroupShuffleSplit
 
-# find the Data in the file system
-DATA = Path(__file__).parent / "Data" / "Data.csv"
-
-# Load the data
-df = pd.read_csv(DATA)
-
-# check the shape/size of the csv file
-def checkData():
-    # assigning a variable to the shape of the csv
-    # returning this shape which will help us analyse the data
-    # in this case (112516, 5) gets returned so we know how many rows and columns
-    dataShape = df.shape
-    return print(dataShape)
-
-def checkMissingValues(data):
-    # using isna() to go through the csv file to hightlight if there are missing values and sums the amount of missing values per columns
-    missing = data.isna().sum()
-    # returns a pandas dataframe with one column from the pandas series variable - missing
-    return pd.DataFrame({"Missing": missing})
-
-def processMissing(df):
-    # show the rows which have missing data
-    df = df[df.isna().any(axis=1)]
-
-    # Remove these rows which we have found with missing values
-    df = df.dropna()
-    return df.shape
-
-# Opening the file and reading its contents.
-# def openFile(dataObject):
-#     # Using pandas to read the csv file
-#     readFile = pd.read_csv(dataObject)
-#     # returning the file which can now be analysed.
-#     return print(readFile)
-
-# def describeData(file):
-#     for column in file:
-
-# Load the data and drop the 44 rows with no HR value
-
-# df = df.dropna(subset=["HR"])
+# Taking the cleaned dataset from preprocess and assinging to the df variable.
+df = returnCleanData()
 
 # Features (X), target (y), and the groups to split by
 # X = df[["HR", "respr"]]
@@ -61,8 +25,5 @@ def processMissing(df):
 # print("Test participants:", sorted(groups.iloc[test_idx].unique().tolist()))
 
 if __name__ == "__main__":
-    checkData()
-    print(processMissing(DATA))  
-
-
-
+    print(df)
+    
