@@ -34,16 +34,30 @@ def handle_missing_values(df):
     return df
 
 def checkForNoEmptyValues(df):
-    emptyValues = df.isna().sum().sum()
+    # empty values is assigned to the sum of all columns that have a missing values totaled together
+    # hence the .sum().sum() sum per column and then sum per dataframe
+    emptyValues = df.isnull().sum().sum()
+    # if there still are empty values then print a warning
+    # Otherwise let the user know there are no empty values
     if emptyValues:
         print(f"Warning: {emptyValues} still remain in the dataset")
     else:
         print("No more empty values in Dataset")
 
-def checkNoDuplicates():
-    return
+def checkNoDuplicates(df):
+    # Check the dataset to ensure that no two rows of values are exactly the same
+    # follows similar logic as checkForNoEmptyValues
+    duplicates = df.duplicated().sum().sum()
+    # Given the Time (Sec) column it would be very difficult for their to be any duplicates and I dont want to remove this column
+    # This is just to confirm there are no two rows the exact same.
+    if duplicates:
+        print(f"Warning: {duplicates} still remain in the dataset")
+    else:
+        print("No duplicated values detected in the dataset")
 
-def checkDataTypes():
+def checkDataTypes(df):
+    dataTypes = df.dtypes
+    print(dataTypes)
     return
 
 
@@ -52,3 +66,5 @@ if __name__ == "__main__":
     x = loadData()
     u = handle_missing_values(x)
     print(checkForNoEmptyValues(u))
+    print(checkNoDuplicates(u))
+    print(checkDataTypes(u))
