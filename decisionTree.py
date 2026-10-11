@@ -6,9 +6,22 @@ from preprocess import returnCleanData
 from sklearn.model_selection import GroupShuffleSplit
 
 # Taking the cleaned dataset from preprocess and assinging to the df variable.
-df = returnCleanData()
+def getData():
+    df = returnCleanData()
+    return df
 
+# Sci Kit learn needs needs to know the features of the dataframe we wish to train
+# along with the target which is what we want to make our prediciton based on.
+# also, in this casewhat we are using to group our data
 def setUp():
+    # X is the features we are using, The features which the ML model will learn from
+    # in our case it will be the HR (Heart rate) column and the respr(respiration) columns
+    # scikit-Learn expects a dataframe which is what the double brackets achieves. 
+    # outer brackets to select from the dataframe and inner to return as a list of names
+    # convention dictates x be in caps.
+    X = df[["HR", "respr"]]
+    y = df["Label"]
+    groups = df["Participant"]
     return
 
 def splitTestAndTraining():
