@@ -56,9 +56,34 @@ def checkNoDuplicates(df):
         print("No duplicated values detected in the dataset")
 
 def checkDataTypes(df):
+    # Checking that the data in the columns are consistent.
+    # mixed or text value data types would make pandeas store it as a non numeric type
+    # So, we need a check to make sure they are numeric.
+
+    # check the datatypes of the columns in the dataframe
     dataTypes = df.dtypes
-    print(dataTypes)
-    return
+
+    # assigns any columns which are non numeric to the variable nonNumeric
+    nonNumeric = df.select_dtypes(exclude="number")
+    if len(nonNumeric.columns()):
+        print(f"Warning: {nonNumeric} still remain in the dataset")
+    else:
+        print("No duplicated values detected in the dataset")
+
+def returnCleanData():
+    # This function acts as the conductor of the file, I will run this function from __main__ block
+    # below which will run the necessary functions and clean the data. Making it ready to be worked 
+    # with the ML algorithms provided.
+
+    # Load the data from the file
+    df = loadData()
+
+    # CLean the Dataframe we have loaded above to remove missing vales
+    df = handle_missing_values(df)
+
+    # Now, check the Dataframe and ensure we are getting valid data such as,
+    # The data has no more empty values, It has no duplicate values and the datatypes are consistent
+
 
 
 
