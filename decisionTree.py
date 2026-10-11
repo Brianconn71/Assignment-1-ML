@@ -8,6 +8,21 @@ from sklearn.model_selection import GroupShuffleSplit
 # Taking the cleaned dataset from preprocess and assinging to the df variable.
 df = returnCleanData()
 
+def setUp():
+    return
+
+def splitTestAndTraining():
+    return
+
+def trainModel():
+    return
+
+def evaluateModel():
+    return
+
+def visualiseResults():
+    return
+
 # Features (X), target (y), and the groups to split by
 # X = df[["HR", "respr"]]
 # y = df["Label"]
