@@ -4,6 +4,7 @@ Machine Learning Algoritm on it.
 """
 from preprocess import returnCleanData
 from sklearn.model_selection import GroupShuffleSplit
+from sklearn.tree import DecisionTreeClassifier
 
 # Taking the cleaned dataset from preprocess and assinging to the df variable.
 def getData():
@@ -37,16 +38,32 @@ def setUp(df):
 def splitTestAndTraining(X, y, groups):
     # This is used to create a splitter object - GroupShuffleSplit is a Scikit-Learn method which I am using to 
     # use the groups from setup() and split them fully into either training or testing. n_splits is set to 1 meaning we only need one split based on the 80:20
-    # split we are aiming for, test_size=0.2 ensures we are splitting data based on 80:20 with 20% going to testing,
+    # split we are aiming for, test_size=0.2 ensures we are splitting data based on 80:20 with 20% of participants going to testing,
     # random_state=25 - ensures we get the same split each time we run the algorithm, any number would work so 25 chosen at random. 
     splitData = GroupShuffleSplit(n_splits=1, test_size=0.2, random_state=25)
     # This is used to take the split data variable and use it on the dataset.
     # it will return a generator which produces results one at a time. The split is going to be 
     # Numpy arrays which will contain splits for test and training data.
-    train, test = next(splitData.split(X, y, groups))
+    trainIdx, testIdx = next(splitData.split(X, y, groups))
+    # below two lin use the iloc method to select a row based on its position.abs@ since we are taking in an array of positions it gives us just those rows to use.
+    # So, XTrain holds 80% of participants for training and XTest 20% for testing.
+    # yTrain and Test are the same so that the data doesnt get mixed up and cause misalignment issues
+    XTrain, XTest = X.iloc[trainIdx], X.iloc[testIdx]
+    yTrain, yTest = y.iloc[trainIdx], y.iloc[testIdx]
 
-def trainModel():
-    return
+    # Return the four variables for use in training and testing
+    return XTrain, XTest, yTrain, yTest
+
+# this method just prints to the terminal to ensure we have correctly setup the training and test variables.
+def checkTrainAndTestValues(XTrain, XTest):
+    print("Training Data:", len(XTrain))
+    print("Testing Data:", len(XTest))
+    # print("Test participants:", sorted(groups.iloc[testIdx].unique().tolist()))
+
+def trainModel(XTrain, yTrain):
+    decisionTree = DecisionTreeClassifier(max_depth=5, random_state=25, class_weight=None, criterion=None)
+    trainData = decisionTree.fit(XTrain, yTrain)
+    return trainData
 
 def evaluateModel():
     return
@@ -54,17 +71,9 @@ def evaluateModel():
 def visualiseResults():
     return
 
-# 80:20 split, keeping each participant entirely in train or test
-# splitter = GroupShuffleSplit(n_splits=1, test_size=0.2, random_state=42)
-# train_idx, test_idx = next(splitter.split(X, y, groups))
-
-# X_train, X_test = X.iloc[train_idx], X.iloc[test_idx]
-# y_train, y_test = y.iloc[train_idx], y.iloc[test_idx]
-
-# print("Training rows:", len(X_train))
-# print("Test rows:", len(X_test))
-# print("Test participants:", sorted(groups.iloc[test_idx].unique().tolist()))
 
 if __name__ == "__main__":
-    print(df)
+    df = getData()
+    x, y, g = setUp(df)
+    splitTestAndTraining(x, y, g)
     
