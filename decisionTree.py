@@ -2,10 +2,11 @@
 This file takes in the data which has been preprocessed from the preprocess.py file and runs a Decision Tree 
 Machine Learning Algoritm on it.
 """
+import matplotlib.pyplot as plt
 from preprocess import returnCleanData
 from sklearn.model_selection import GroupShuffleSplit
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.metrics import classification_report, confusion_matrix, accuracy_score, precision_score, recall_score, f1_score
+from sklearn.tree import DecisionTreeClassifier, plot_tree
+from sklearn.metrics import classification_report, confusion_matrix, accuracy_score, precision_score, recall_score, f1_score, ConfusionMatrixDisplay
 
 # Taking the cleaned dataset from preprocess and assinging to the df variable.
 def getData():
@@ -121,8 +122,13 @@ def evaluateModel(trainedModel, XTrain, XTest, yTrain, yTest):
     return
 
 # This function is used to plot the results of the evaluatemodel to the user.
-def visualiseResults():
-    # Plot the 
+def visualiseResults(model, XTest, yTest):
+    # Plot the Decision Tree to the user.
+    plt.figure(figsize=(10,5))
+    plot_tree(model, feature_names=list(XTest.columns), class_names=["No", "Yes"], filled=True, rounded=True, max_depth=5, fontsize=10)
+    plt.title("Decision Tree")
+    plt.savefig("decisionTree.png")
+    plt.show()
     return
 
 
@@ -132,5 +138,6 @@ if __name__ == "__main__":
     XTr, XTe, yTr, yTe = splitTestAndTraining(x, y, g)
     trainedTree = trainModel(XTr, yTr)
     evaluateModel(trainedTree, XTr, XTe, yTr, yTe)
+    visualiseResults(trainedTree, XTe, yTe)
 
     
