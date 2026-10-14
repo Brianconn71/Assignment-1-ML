@@ -60,12 +60,35 @@ def checkTrainAndTestValues(XTrain, XTest):
     print("Testing Data:", len(XTest))
     # print("Test participants:", sorted(groups.iloc[testIdx].unique().tolist()))
 
+# Using this function to build and train the decision tree classifoer in scikit-learn.
+# This function only takes training data from the splitTestAndTrain Fucntion and explicitly avoids the test data
+# the whole point is to avoid leaking data which would happen if we included test data
 def trainModel(XTrain, yTrain):
-    decisionTree = DecisionTreeClassifier(max_depth=5, random_state=25, class_weight=None, criterion=None)
-    trainData = decisionTree.fit(XTrain, yTrain)
-    return trainData
+    # Create the decision tree with chosen settings
+    # max_depth = 5 is to avoid overfitting, basically at 5 we are limiting how complex the decision tree becomes, higher value will mean a more complex tree which may better fit but it will memorise noise
+    # random_state=25 ensures results are reproducible, if two pieces of data are the same then it will remember which way to split the data
+    # class_weight="balanced" used to set the weight of each class weight to total rows. 
+    # criterion = "gini" measures how well the split of the data is, so if p=1 then Gini - 1-1 =0 so it would be pure and 50/50 mix is what we wnat so 
+    # Gini = 1 - (0.25 +0.25) =0.5
+    decisionTree = DecisionTreeClassifier(max_depth=5, random_state=25, class_weight="balanced", criterion="gini")
+    # where the training of the data happens based on the training data from the split we got in splitTestAndTraining function above
+    # Starts with all of the training data, then searches every feature for the split that would best reduce ginin index
+    # then splits rows into two branches and repeats process again, stops when max_depth is reached or can't be split any further.
+    # finally it will label each row and that is then the prediciton for any new row of data which may be similar to it.
+    trainedTree = decisionTree.fit(XTrain, yTrain)
+    # below two prints statements check on the size of the tree.
+    # gets how many levels deep the decision tree reached
+    print(trainedTree.get_depth())
+    # gets the number of leaves the tree has reached
+    # A tree with max_depth = 5 means at most 2(5) = 32 leaves maximum
+    print(trainedTree.get_n_leaves())
 
-def evaluateModel():
+    # Now return the trained model for use in evaluateModel to predict the test data on it.
+    return trainedTree
+
+# evalutaeModel method which will take the trained model we return in trainModel and evaluates the test data based on this trained model
+def evaluateModel(trainedModel, XTrain, XTest, yTrain, yTest):
+     model.predict(XTrain)
     return
 
 def visualiseResults():
@@ -75,5 +98,7 @@ def visualiseResults():
 if __name__ == "__main__":
     df = getData()
     x, y, g = setUp(df)
-    splitTestAndTraining(x, y, g)
+    XTr, XTe, yTr, yTe = splitTestAndTraining(x, y, g)
+    print(trainModel(XTr, yTr))
+
     
