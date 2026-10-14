@@ -5,6 +5,7 @@ Machine Learning Algoritm on it.
 from preprocess import returnCleanData
 from sklearn.model_selection import GroupShuffleSplit
 from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import classification_report, confusion_matrix, accuracy_score, precision_score, recall_score, f1_score
 
 # Taking the cleaned dataset from preprocess and assinging to the df variable.
 def getData():
@@ -88,10 +89,40 @@ def trainModel(XTrain, yTrain):
 
 # evalutaeModel method which will take the trained model we return in trainModel and evaluates the test data based on this trained model
 def evaluateModel(trainedModel, XTrain, XTest, yTrain, yTest):
-     model.predict(XTrain)
+    # Sends every training row of data down the trained model, essentially asking 'is HR > than? and is Respr > than?'
+    # until it reaches the bottom leaf of the tree which gives us our answer. The result is an array of predictions
+    trainPrediction = trainedModel.predict(XTrain)
+    # Does the exact same job as above but on the test data rather than training data. 
+    testPrediction = trainedModel.predict(XTest)
+
+    # printing to terminal with results
+    print("_____ Training Set _____")
+    # This compares the training labels with the model predictions, it prints the precision, recall F1 and support values
+    print(classification_report(yTrain, trainPrediction, target_names=["No", "Yes"]))
+    # prints a 2 x 2 table with counts 
+    print(confusion_matrix(yTrain, trainPrediction))
+    """
+    accuracy_score(trainPrediction, testPrediction)
+    precision_score(trainPrediction, testPrediction)
+    recall_score(trainPrediction, testPrediction)
+    f1_score(trainPrediction, testPrediction)
+    """
+
+    # All three lines below follow the same logic as training set above and compares can be made
+    print("_____ Test Set _____")
+    print(classification_report(yTest, testPrediction, target_names=["No", "Yes"]))
+    print(confusion_matrix(yTest, testPrediction))
+
+    """accuracy_score(trainPrediction, yTest)
+    precision_score(trainPrediction, yTest)
+    recall_score(trainPrediction, yTest)
+    f1_score(trainPrediction, yTest)"""
+
     return
 
+# This function is used to plot the results of the evaluatemodel to the user.
 def visualiseResults():
+    # Plot the 
     return
 
 
@@ -99,6 +130,7 @@ if __name__ == "__main__":
     df = getData()
     x, y, g = setUp(df)
     XTr, XTe, yTr, yTe = splitTestAndTraining(x, y, g)
-    print(trainModel(XTr, yTr))
+    trainedTree = trainModel(XTr, yTr)
+    evaluateModel(trainedTree, XTr, XTe, yTr, yTe)
 
     
