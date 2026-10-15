@@ -127,26 +127,52 @@ def visualiseResults(model, XTest, yTest):
     # Plot the Decision Tree to the user.
     plt.figure(figsize=(14,6))
     plot_tree(model, feature_names=list(XTest.columns), class_names=["No", "Yes"], filled=True, rounded=True, max_depth=2, fontsize=6)
+    # Plot the title of the Tree
     plt.title("Decision Tree")
-    plt.savefig("figures/decisionTree.png", bbox_inches="tight")
+    # Stops overlaps in the diagram without then labels could be clipped and overlapping
+    plt.tight_layout()
+    # Save the grid as a png file in the figures folder in root.
+    # dpi=150 is the resolution, higher value then gives a higher quality image
+    plt.savefig("figures/decisionTree.png", dpi=180)
+    # Shows the diagram on the screen to the user.
     plt.show()
 
     # Plot Confusion Matrix
-    ConfusionMatrixDisplay.from_predictions(yTest, model.predict(XTest), display_labels=["No", "Yes"], cmap="Blues", colorbar=False, normalize="true")
+    # Confusion Matrix Display essentially takes in same arguments as the confusionmatrix in function evaluatemodel and makes a coloured (Green) grid of results
+    # Normalize added so as to make grid easier to read and understand by showing percentages. display labels shows the labels for the predictions either No or Yes
+    # cmap="Green" adds green shade to the boxes in grid so larger grid sections stand out.
+    ConfusionMatrixDisplay.from_predictions(yTest, model.predict(XTest), display_labels=["No", "Yes"], cmap="Greens", colorbar=False, normalize="true")
+    # Plot the title of the Grid
     plt.title("Confusion Matrix of Test Set")
+    # Stops overlaps in the diagram without then labels could be clipped and overlapping
     plt.tight_layout()
-    plt.savefig("figures/confusionMatrix.png", dpi=150)
+    # Save the grid as a png file in the figures folder in root.
+    # dpi=150 is the resolution, higher value then gives a higher quality image
+    plt.savefig("figures/confusionMatrix.png", dpi=180)
+    # Shows the diagram on the screen to the user.
     plt.show()
 
-    # Features and importance
+    # Features and importance bar chart
+    # features is a pandas series of data, decision trees store how much each feature helped its prediction, every time tree splits gini impurity gets reduced
+    # they are then added and scaled and we are left with a series of data with no names/labels.
+    # index.XTest.columns attaches column names
+    # sorting values then in place so that it flows smallest to largest
     features = pd.Series(model.feature_importances_, index=XTest.columns).sort_values()
-    features.plot(kind="barh", color="#3b6fb6", figsize=(5, 2.5))
+    # here we plot the features pandas series, kind="barh" means we are plotting a horizontal bar chart
+    # color="#3b6fb6" only one colour is needed as we are plotting just one series
+    # figsize=(10, 5) size of the diagram width x height in inches
+    features.plot(kind="barh", color="#3f9a4f", figsize=(10, 5))
+    # added a label to x axis to explain what the values are for.
     plt.xlabel("Importance and share of impurity reduction")
+    # Plot the title of the bar chart
     plt.title("Feature Importance")
+    # Stops overlaps in the diagram without then labels could be clipped and overlapping
     plt.tight_layout()
-    plt.savefig("figures/featureImportance.png", dpi=150)
+    # Save the grid as a png file in the figures folder in root.
+    # dpi=150 is the resolution, higher value then gives a higher quality image
+    plt.savefig("figures/featureImportance.png", dpi=180)
+    # Shows the diagram on the screen to the user.
     plt.show()
-    return
 
 
 if __name__ == "__main__":
