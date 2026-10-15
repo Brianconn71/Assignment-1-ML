@@ -82,10 +82,10 @@ def trainModel(XTrain, yTrain):
     trainedTree = decisionTree.fit(XTrain, yTrain)
     # below two prints statements check on the size of the tree.
     # gets how many levels deep the decision tree reached
-    print(trainedTree.get_depth())
+    print("Tree Depth: " + str(trainedTree.get_depth()))
     # gets the number of leaves the tree has reached
     # A tree with max_depth = 5 means at most 2(5) = 32 leaves maximum
-    print(trainedTree.get_n_leaves())
+    print("Leaf count: " + str(trainedTree.get_n_leaves()))
 
     # Now return the trained model for use in evaluateModel to predict the test data on it.
     return trainedTree
@@ -140,7 +140,7 @@ def visualiseResults(model, XTest, yTest):
     # Stops overlaps in the diagram without then labels could be clipped and overlapping
     plt.tight_layout()
     # Save the grid as a png file in the figures folder in root.
-    # dpi=150 is the resolution, higher value then gives a higher quality image
+    # dpi=160 is the resolution, higher value then gives a higher quality image
     plt.savefig("figures/decisionTree.png", dpi=160)
     # Shows the diagram on the screen to the user.
     plt.show()
@@ -148,14 +148,14 @@ def visualiseResults(model, XTest, yTest):
     # Plot Confusion Matrix
     # Confusion Matrix Display essentially takes in same arguments as the confusionmatrix in function evaluatemodel and makes a coloured (Green) grid of results
     # Normalize added so as to make grid easier to read and understand by showing percentages. display labels shows the labels for the predictions either No or Yes
-    # cmap="Green" adds green shade to the boxes in grid so larger grid sections stand out.
+    # cmap="Greens" adds green shade to the boxes in grid so larger grid sections stand out.
     ConfusionMatrixDisplay.from_predictions(yTest, model.predict(XTest), display_labels=["No", "Yes"], cmap="Greens", colorbar=False, normalize="true")
     # Plot the title of the Grid
     plt.title("Confusion Matrix of Test Set")
     # Stops overlaps in the diagram without then labels could be clipped and overlapping
     plt.tight_layout()
     # Save the grid as a png file in the figures folder in root.
-    # dpi=150 is the resolution, higher value then gives a higher quality image
+    # dpi=160 is the resolution, higher value then gives a higher quality image
     plt.savefig("figures/confusionMatrix.png", dpi=160)
     # Shows the diagram on the screen to the user.
     plt.show()
@@ -166,10 +166,12 @@ def visualiseResults(model, XTest, yTest):
     # index.XTest.columns attaches column names
     # sorting values then in place so that it flows smallest to largest
     features = pd.Series(model.feature_importances_, index=XTest.columns).sort_values()
+    # create an empty figure 14 inches wide and 6 inches tall.
+    plt.figure(figsize=(14,6))
     # here we plot the features pandas series, kind="barh" means we are plotting a horizontal bar chart
-    # color="#3b6fb6" only one colour is needed as we are plotting just one series
-    # figsize=(10, 5) size of the diagram width x height in inches
-    features.plot(kind="barh", color="#3f9a4f", figsize=(10, 5))
+    # color="#3f9a4f" only one colour is needed as we are plotting just one series
+    # figsize=(14, 6) size of the diagram width x height in inches
+    features.plot(kind="barh", color="#3f9a4f", figsize=(14, 6))
     # added a label to x axis to explain what the values are for.
     plt.xlabel("Importance and share of impurity reduction")
     # Plot the title of the bar chart
@@ -177,7 +179,7 @@ def visualiseResults(model, XTest, yTest):
     # Stops overlaps in the diagram without then labels could be clipped and overlapping
     plt.tight_layout()
     # Save the grid as a png file in the figures folder in root.
-    # dpi=150 is the resolution, higher value then gives a higher quality image
+    # dpi=160 is the resolution, higher value then gives a higher quality image
     plt.savefig("figures/featureImportance.png", dpi=160)
     # Shows the diagram on the screen to the user.
     plt.show()
