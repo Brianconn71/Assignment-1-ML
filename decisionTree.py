@@ -11,6 +11,7 @@ from sklearn.metrics import classification_report, confusion_matrix, accuracy_sc
 
 # Taking the cleaned dataset from preprocess and assinging to the df variable.
 def getData():
+    # call the function to take un processed data, process and clean it and return for use in this file.
     df = returnCleanData()
     return df
 
@@ -120,20 +121,27 @@ def evaluateModel(trainedModel, XTrain, XTest, yTrain, yTest):
     recall_score(trainPrediction, yTest)
     f1_score(trainPrediction, yTest)"""
 
-    return
 
 # This function is used to plot the results of the evaluatemodel to the user.
 def visualiseResults(model, XTest, yTest):
     # Plot the Decision Tree to the user.
+    # create an empty figure 14 inches wide and 6 inches tall.
     plt.figure(figsize=(14,6))
-    plot_tree(model, feature_names=list(XTest.columns), class_names=["No", "Yes"], filled=True, rounded=True, max_depth=2, fontsize=6)
+    # Plot the tree to the figuew
+    # model which we are taking in, it is the trained model from trainModel function
+    # feature_names=list(XTest.columns) shows the two feature columns
+    # class_names=["No", "Yes"] puts the predicted class in each of the boxes
+    # filled=True colours in the boxes by majority class (Orange=No, Blue=Yes)
+    # max_depth=2 only shows the top two levels from the split below root, does not affet model split
+    # fontsize=10 is the text size inside the box
+    plot_tree(model, feature_names=list(XTest.columns), class_names=["No", "Yes"], filled=True, max_depth=2, fontsize=10)
     # Plot the title of the Tree
     plt.title("Decision Tree")
     # Stops overlaps in the diagram without then labels could be clipped and overlapping
     plt.tight_layout()
     # Save the grid as a png file in the figures folder in root.
     # dpi=150 is the resolution, higher value then gives a higher quality image
-    plt.savefig("figures/decisionTree.png", dpi=180)
+    plt.savefig("figures/decisionTree.png", dpi=160)
     # Shows the diagram on the screen to the user.
     plt.show()
 
@@ -148,7 +156,7 @@ def visualiseResults(model, XTest, yTest):
     plt.tight_layout()
     # Save the grid as a png file in the figures folder in root.
     # dpi=150 is the resolution, higher value then gives a higher quality image
-    plt.savefig("figures/confusionMatrix.png", dpi=180)
+    plt.savefig("figures/confusionMatrix.png", dpi=160)
     # Shows the diagram on the screen to the user.
     plt.show()
 
@@ -170,7 +178,7 @@ def visualiseResults(model, XTest, yTest):
     plt.tight_layout()
     # Save the grid as a png file in the figures folder in root.
     # dpi=150 is the resolution, higher value then gives a higher quality image
-    plt.savefig("figures/featureImportance.png", dpi=180)
+    plt.savefig("figures/featureImportance.png", dpi=160)
     # Shows the diagram on the screen to the user.
     plt.show()
 
