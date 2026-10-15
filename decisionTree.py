@@ -2,6 +2,7 @@
 This file takes in the data which has been preprocessed from the preprocess.py file and runs a Decision Tree 
 Machine Learning Algoritm on it.
 """
+import pandas as pd
 import matplotlib.pyplot as plt
 from preprocess import returnCleanData
 from sklearn.model_selection import GroupShuffleSplit
@@ -124,10 +125,26 @@ def evaluateModel(trainedModel, XTrain, XTest, yTrain, yTest):
 # This function is used to plot the results of the evaluatemodel to the user.
 def visualiseResults(model, XTest, yTest):
     # Plot the Decision Tree to the user.
-    plt.figure(figsize=(10,5))
-    plot_tree(model, feature_names=list(XTest.columns), class_names=["No", "Yes"], filled=True, rounded=True, max_depth=5, fontsize=10)
+    plt.figure(figsize=(14,6))
+    plot_tree(model, feature_names=list(XTest.columns), class_names=["No", "Yes"], filled=True, rounded=True, max_depth=2, fontsize=6)
     plt.title("Decision Tree")
-    plt.savefig("decisionTree.png")
+    plt.savefig("figures/decisionTree.png", bbox_inches="tight")
+    plt.show()
+
+    # Plot Confusion Matrix
+    ConfusionMatrixDisplay.from_predictions(yTest, model.predict(XTest), display_labels=["No", "Yes"], cmap="Blues", colorbar=False, normalize="true")
+    plt.title("Confusion Matrix of Test Set")
+    plt.tight_layout()
+    plt.savefig("figures/confusionMatrix.png", dpi=150)
+    plt.show()
+
+    # Features and importance
+    features = pd.Series(model.feature_importances_, index=XTest.columns).sort_values()
+    features.plot(kind="barh", color="#3b6fb6", figsize=(5, 2.5))
+    plt.xlabel("Importance and share of impurity reduction")
+    plt.title("Feature Importance")
+    plt.tight_layout()
+    plt.savefig("figures/featureImportance.png", dpi=150)
     plt.show()
     return
 
