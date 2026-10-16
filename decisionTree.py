@@ -104,22 +104,12 @@ def evaluateModel(trainedModel, XTrain, XTest, yTrain, yTest):
     print(classification_report(yTrain, trainPrediction, target_names=["No", "Yes"]))
     # prints a 2 x 2 table with counts 
     print(confusion_matrix(yTrain, trainPrediction))
-    """
-    accuracy_score(trainPrediction, testPrediction)
-    precision_score(trainPrediction, testPrediction)
-    recall_score(trainPrediction, testPrediction)
-    f1_score(trainPrediction, testPrediction)
-    """
 
     # All three lines below follow the same logic as training set above and compares can be made
     print("_____ Test Set _____")
     print(classification_report(yTest, testPrediction, target_names=["No", "Yes"]))
     print(confusion_matrix(yTest, testPrediction))
 
-    """accuracy_score(trainPrediction, yTest)
-    precision_score(trainPrediction, yTest)
-    recall_score(trainPrediction, yTest)
-    f1_score(trainPrediction, yTest)"""
 
 
 # This function is used to plot the results of the evaluatemodel to the user.
