@@ -60,6 +60,7 @@ def splitTestAndTraining(X, y, groups):
 
 # this method just prints to the terminal to ensure we have correctly setup the training and test variables.
 def checkTrainAndTestValues(XTrain, XTest):
+    print()
     print("Training Data:", len(XTrain))
     print("Testing Data:", len(XTest))
     # print("Test participants:", sorted(groups.iloc[testIdx].unique().tolist()))

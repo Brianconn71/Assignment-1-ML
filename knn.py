@@ -59,7 +59,9 @@ if __name__ == "__main__":
     XTr, XTe, yTr, yTe = splitTestAndTraining(x, y, g)
     XTrainScaled, XTestScaled = scaleData(XTr, XTe)
 
-    k = 80
+    # knn as an odd number as there are two classes "Yes" and "No" with two classes,
+    # KNN could produce a tie between the 
+    k = 83
     knnModel = trainModel(XTrainScaled, yTr, k)
 
     evaluateModel(knnModel, XTrainScaled, XTestScaled, yTr, yTe)
