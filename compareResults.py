@@ -26,7 +26,7 @@ if __name__ == "__main__":
     XTrScaled, XTeScaled = scaleData(XTr, XTe)
 
     # Train the knn model
-    knn = trainKnn(XTrScaled, yTr, 83)
+    knn = trainKnn(XTrScaled, yTr, 51)
 
     #Plot one figure with two panels one for Decision tree one for KNN
     fig, axis = plt.subplots(1, 2, figsize=(14, 6))
