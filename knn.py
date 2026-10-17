@@ -61,7 +61,7 @@ if __name__ == "__main__":
 
     # knn as an odd number as there are two classes "Yes" and "No" with two classes,
     # KNN could produce a tie between the 
-    k = 83
+    k = 51
     knnModel = trainModel(XTrainScaled, yTr, k)
 
     evaluateModel(knnModel, XTrainScaled, XTestScaled, yTr, yTe)

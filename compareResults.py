@@ -43,7 +43,7 @@ if __name__ == "__main__":
         normalize="true", cmap="Reds", im_kw={"vmin": 0, "vmax": 1},
         ax=axis[1]
     )
-    axis[1].set_title("KNN (test set), k= 83")
+    axis[1].set_title("KNN (test set), k= 51")
 
     fig.suptitle("Normalised Confusion Matrix")
     plt.tight_layout()
